@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>とあるエンジニアの日記帳</title>
+  </head>
+  <body>
+    {% load static %}
+    <h1>とあるエンジニアの日記帳</h1>
+    {% for post in posts %}
+      <div>
+        <h2>{{ post.title }}</h2>
+        <div>投稿 : {{ post.user }}</div>
+        <div>{{ post.body |safe }}</div>
+        <div>{{ post.updated_at }}</div>
+        <div>カテゴリー : 
+        {% for category in post.categories.all %}
+          <span>{{ category }},</span>
+        {% endfor %}
+        </div>
+      </div>
+    {% empty %}
+      <p>No Diaries.</p>
+    {% endfor %}
+  </body>
+</html>
