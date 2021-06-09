@@ -1,0 +1,58 @@
+[
+  {
+    "model": "diary.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$180000$v5YxxVKCObi7$SrCWUES4Qedh+fsHJIx2az1cMgS6wC4O7JapYTbj1/4=",
+      "last_login": "2021-06-07T13:09:31.834Z",
+      "is_superuser": true,
+      "username": "yhei",
+      "first_name": "",
+      "last_name": "",
+      "email": "yheihei0126@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2021-06-07T13:05:56.903Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "diary.post",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "title": "タイトル1",
+      "body": "<p>一つ目の日記本文",
+      "created_at": "2021-06-07T13:11:23.615Z",
+      "updated_at": "2021-06-07T13:11:23.615Z",
+      "categories": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "diary.post",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "title": "\u65e5\u8a18\u30ab\u30c6\u30b4\u30ea\u30fc\u306e\u65e5\u8a18",
+      "body": "<h3>\u30ab\u30c6\u30b4\u30ea\u30fc\u3092\u3064\u3051\u3066\u307f\u305f</h3>\r\n<p>\u591a\u5bfe\u591a\u304c\u30ab\u30c6\u30b4\u30ea\u30fc</p>",
+      "created_at": "2021-06-07T13:12:19.457Z",
+      "updated_at": "2021-06-07T13:13:12.822Z",
+      "categories": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "diary.category",
+    "pk": 1,
+    "fields": {
+      "name": "\u65e5\u8a18\u30ab\u30c6\u30b4\u30ea\u30fc",
+      "slug": "diary",
+      "created_at": "2021-06-07T13:11:40.564Z",
+      "updated_at": "2021-06-07T13:11:40.564Z"
+    }
+  }
+]
