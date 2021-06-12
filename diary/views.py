@@ -1,10 +1,17 @@
 from django.shortcuts import render
+from django.urls import reverse
 
-# Create your views here.
-from .models import Post
+from diary.models import Post
+from diary.forms import PostForm
+from django.views.generic import UpdateView
 
-# Create your views here.
+
 def index(request):
   return render(request, 'index.html', {
     'posts': Post.objects.all(),
   })
+
+class PostUpdateView(UpdateView):
+  model = Post
+  template_name = 'post_update_view.html'
+  form_class = PostForm
