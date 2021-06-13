@@ -29,3 +29,8 @@ class Category(models.Model):
 
   def __str__(self) -> str:
     return f'{self.name}'
+
+class PostMeta(models.Model):
+  post = models.ForeignKey(Post, on_delete=CASCADE)
+  name = models.CharField(max_length=256)
+  value = models.CharField(max_length=1024)
