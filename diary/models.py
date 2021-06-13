@@ -21,6 +21,7 @@ class Post(models.Model):
     related_name="posts",
   )
 
+
 class Category(models.Model):
   name = models.CharField(max_length=1024)
   slug = models.CharField(max_length=1024)

@@ -7,7 +7,8 @@
     {% load static %}
     <h1>編集画面</h1>
     <div class='p-3'>
-      <form method="post">
+      <h2>投稿</h2>
+      <form method="post" name='post_form'>
         {% csrf_token %}
         {% for field in form.visible_fields %}
           <div class="form-group">
@@ -17,8 +18,25 @@
             {{ field.help_text }}
           </div>
         {% endfor %}
+        <input type="hidden" name='post_form'>
         <button type="submit" class="btn btn-primary mb-2">Edit</button>
       </form>
+      {% for post_meta_form in post_meta_forms %}
+        <h3 class='mt-4'>付加情報</h2>
+        <form method="post" name='post_meta_form'>
+          {% csrf_token %}
+          {% for field in post_meta_form.visible_fields %}
+            <div class="form-group">
+              {{ field.errors }}
+              {{ field.label }}
+              {{ field }}
+              {{ field.help_text }}
+            </div>
+          {% endfor %}
+          <input type="hidden" name='post_meta_form'>
+          <button type="submit" class="btn btn-primary mb-2">Edit</button>
+        </form>
+      {% endfor %}
     </div>
   </body>
 </html>

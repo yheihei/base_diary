@@ -1,5 +1,5 @@
 from django import forms
-from diary.models import Post
+from diary.models import Post, PostMeta
 
 class PostForm(forms.ModelForm):
   class Meta:
@@ -12,3 +12,13 @@ class PostForm(forms.ModelForm):
     self.fields['title'].widget.attrs.update({'class' : 'form-control'})
     self.fields['body'].widget.attrs.update({'class' : 'form-control'})
     self.fields['categories'].widget.attrs.update({'class' : 'form-control'})
+
+class PostMetaForm(forms.ModelForm):
+  class Meta:
+    model = PostMeta
+    fields = ('name', 'value')
+  
+  def __init__(self, *args, **kwargs):
+    super(PostMetaForm, self).__init__(*args, **kwargs)
+    self.fields['name'].widget.attrs.update({'class' : 'form-control'})
+    self.fields['value'].widget.attrs.update({'class' : 'form-control'})
