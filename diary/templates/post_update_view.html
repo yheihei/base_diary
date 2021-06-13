@@ -1,16 +1,24 @@
 <html>
   <head>
     <title>編集画面 - とあるエンジニアの日記帳</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
     {% load static %}
     <h1>編集画面</h1>
-    <form method="post">
-      {% csrf_token %}
-      <table>
-        {{ form }}
-      </table>
-      <input type="submit">
-    </form>
+    <div class='p-3'>
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form.visible_fields %}
+          <div class="form-group">
+            {{ field.errors }}
+            {{ field.label }}
+            {{ field }}
+            {{ field.help_text }}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary mb-2">Edit</button>
+      </form>
+    </div>
   </body>
 </html>
