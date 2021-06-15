@@ -18,11 +18,12 @@ class TestIndexView(TestCase):
     response = c.get(reverse('diary:index'))
     posts = response.context['posts']
 
-    # 1つ以上記事がある
-    self.assertGreater(len(posts), 1)
+    with self.subTest(message="1つ以上記事がある"):
+      self.assertGreater(len(posts), 1)
 
     # 記事にタイトル、本文、カテゴリが存在する
-    post = posts[0]
-    self.assertEqual('タイトル1', post.title)
-    self.assertEqual('<p>一つ目の日記本文', post.body)
-    self.assertEqual('diary', post.categories.first().slug)
+    with self.subTest(message="記事にタイトル、本文、カテゴリが存在する"):
+      post = posts[0]
+      self.assertEqual('タイトル1', post.title)
+      self.assertEqual('<p>一つ目の日記本文', post.body)
+      self.assertEqual('diary', post.categories.first().slug)
