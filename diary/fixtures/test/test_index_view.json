@@ -37,7 +37,7 @@
   "fields": {
     "user": 1,
     "title": "2つめの記事",
-    "body": "<h3>\u30ab\u30c6\u30b4\u30ea\u30fc\u3092\u3064\u3051\u3066\u307f\u305f</h3>\r\n<p>\u591a\u5bfe\u591a\u304c\u30ab\u30c6\u30b4\u30ea\u30fc</p>",
+    "body": "<p>二つ目の日記本文",
     "created_at": "2021-06-07T13:12:19.457Z",
     "updated_at": "2021-06-07T13:13:12.822Z",
     "categories": [
@@ -49,7 +49,7 @@
   "model": "diary.category",
   "pk": 1,
   "fields": {
-    "name": "\u65e5\u8a18\u30ab\u30c6\u30b4\u30ea\u30fc",
+    "name": "日記カテゴリ",
     "slug": "diary",
     "created_at": "2021-06-07T13:11:40.564Z",
     "updated_at": "2021-06-07T13:11:40.564Z"

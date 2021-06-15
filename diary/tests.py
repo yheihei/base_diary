@@ -18,7 +18,7 @@ class TestIndexView(TestCase):
     response = c.get(reverse('diary:index'))
     posts = response.context['posts']
 
-    with self.subTest(message="1つ以上記事がある"):
+    with self.subTest(message="2つ以上記事がある"):
       self.assertGreater(len(posts), 1)
 
     # 記事にタイトル、本文、カテゴリが存在する
