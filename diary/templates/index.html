@@ -10,10 +10,15 @@
         <h2>{{ post.title }}</h2>
         <div>投稿 : {{ post.user }}</div>
         <div>{{ post.body |safe }}</div>
-        <div>{{ post.updated_at }}</div>
+        <div>作成時刻 : {{ post.created_at }}</div>
+        <div>更新時刻 : {{ post.updated_at }}</div>
         <div>カテゴリー : 
         {% for category in post.categories.all %}
           <span>{{ category }},</span>
+        {% endfor %}
+        <div>タグ : 
+        {% for tag in post.tags.all %}
+          <span>{{ tag }},</span>
         {% endfor %}
         </div>
       </div>
