@@ -20,8 +20,19 @@ class Post(models.Model):
     blank=True,
     related_name="posts",
   )
+  tags = models.ManyToManyField(
+    'Tag',
+    blank=True,
+    related_name="posts",
+  )
 
 class Category(models.Model):
+  name = models.CharField(max_length=1024)
+  slug = models.CharField(max_length=1024)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)
+
+class Tag(models.Model):
   name = models.CharField(max_length=1024)
   slug = models.CharField(max_length=1024)
   created_at = models.DateTimeField(auto_now_add=True)
