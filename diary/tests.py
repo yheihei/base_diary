@@ -32,19 +32,20 @@ class 新着タグ付与バッチ(TestCase):
     '''バッチを実行すると 新着タグなし、1週間未経過記事 に新着タグがつくこと'''
     call_command('update_new_tag')
 
-    # 新着がついているが1週間経過した記事 を取得
+    # 新着タグなし、1週間未経過記事 を取得
     post = Post.objects.get(pk=2)
     self.assertEqual(1, len(post.tags.all()))
+    # 新着タグがついている
     self.assertEqual('new', post.tags.first().slug)
 
   @freezegun.freeze_time('2021-06-09 13:00')
   def test_3(self):
     '''新着タグがDBにない場合に、バッチを実行したら...'''
-    # タグを全削除してからバッチ実行
+    # 新着タグを全削除してからバッチ実行
     Tag.objects.all().delete()
     call_command('update_new_tag')
 
-    # 新着がついているが1週間経過した記事 を取得
+    # 新着タグなし、1週間未経過記事 を取得
     post = Post.objects.get(pk=2)
     self.assertEqual(1, len(post.tags.all()))
     # 自動で新着タグが生成され、付与されている
