@@ -1,0 +1,54 @@
+[
+{
+    "model": "diary.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$180000$v5YxxVKCObi7$SrCWUES4Qedh+fsHJIx2az1cMgS6wC4O7JapYTbj1/4=",
+        "last_login": "2021-06-27T04:38:37.894Z",
+        "is_superuser": true,
+        "username": "yhei",
+        "first_name": "",
+        "last_name": "",
+        "email": "yheihei0126@gmail.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2021-06-07T13:05:56.903Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "diary.post",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "title": "新着がついているが1週間経過した記事",
+        "body": "",
+        "created_at": "2021-06-01T13:00:00.000Z",
+        "updated_at": "2021-06-01T13:00:00.000Z",
+        "tags": [1]
+    }
+},
+{
+    "model": "diary.post",
+    "pk": 2,
+    "fields": {
+        "user": 1,
+        "title": "新着タグなし、1週間未経過記事",
+        "body": "",
+        "created_at": "2021-06-06T13:00:00.000Z",
+        "updated_at": "2021-06-06T13:00:00.000Z",
+        "tags": []
+    }
+},
+{
+    "model": "diary.tag",
+    "pk": 1,
+    "fields": {
+        "name": "new",
+        "slug": "new",
+        "created_at": "2021-06-01T12:00:00.000Z",
+        "updated_at": "2021-06-01T12:00:00.000Z"
+    }
+}
+]
