@@ -14,7 +14,14 @@ class Command(BaseCommand):
 
   def handle(self, *args, **options):
     tag_slug = options.get('new_tag_slug') if options.get('new_tag_slug') else 'new'
-    tag = Tag.objects.get(slug=tag_slug)
+    # tag = Tag.objects.get(slug=tag_slug)
+    tag, _ = Tag.objects.get_or_create(
+      slug=tag_slug,
+      defaults=dict(
+        name=tag_slug,
+        slug=tag_slug
+      ),
+    )
 
     now = timezone.now()
     for post in list(Post.objects.all()):

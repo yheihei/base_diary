@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.core.management import call_command
 import freezegun
 
-from diary.models import Post
+from diary.models import Post, Tag
 
 
 # Create your tests here.
@@ -35,4 +35,17 @@ class 新着タグ付与バッチ(TestCase):
     # 新着がついているが1週間経過した記事 を取得
     post = Post.objects.get(pk=2)
     self.assertEqual(1, len(post.tags.all()))
+    self.assertEqual('new', post.tags.first().slug)
+
+  @freezegun.freeze_time('2021-06-09 13:00')
+  def test_3(self):
+    '''新着タグがDBにない場合に、バッチを実行したら...'''
+    # タグを全削除してからバッチ実行
+    Tag.objects.all().delete()
+    call_command('update_new_tag')
+
+    # 新着がついているが1週間経過した記事 を取得
+    post = Post.objects.get(pk=2)
+    self.assertEqual(1, len(post.tags.all()))
+    # 自動で新着タグが生成され、付与されている
     self.assertEqual('new', post.tags.first().slug)
