@@ -50,3 +50,14 @@ class 新着タグ付与バッチ(TestCase):
     self.assertEqual(1, len(post.tags.all()))
     # 自動で新着タグが生成され、付与されている
     self.assertEqual('new', post.tags.first().slug)
+
+  @freezegun.freeze_time('2021-06-09 13:00')
+  def test_4(self):
+    '''新着タグをコマンドから指定できること'''
+    call_command('update_new_tag', new_tag_slug='new2')
+
+    # 新着タグなし、1週間未経過記事 を取得
+    post = Post.objects.get(pk=2)
+    self.assertEqual(1, len(post.tags.all()))
+    # 指定した新着タグが生成され、付与されている
+    self.assertEqual('new2', post.tags.first().slug)
