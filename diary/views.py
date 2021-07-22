@@ -2,9 +2,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from .models import Post
-from rest_framework import generics, filters
+from rest_framework import viewsets, filters
 from .serializers import PostSerializer
-import django_filters.rest_framework
 
 # Create your views here.
 def index(request):
@@ -20,7 +19,7 @@ class CategoryFilter(filters.BaseFilterBackend):
       return queryset
 
 
-class PostList(generics.ListAPIView):
+class PostViewSet(viewsets.ModelViewSet):
   queryset = Post.objects.all()
   serializer_class = PostSerializer
   filter_backends = [
