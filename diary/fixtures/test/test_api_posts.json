@@ -1,0 +1,68 @@
+[
+  {
+      "model": "diary.user",
+      "pk": 1,
+      "fields": {
+          "password": "pbkdf2_sha256$180000$vYCnAMtlYpZj$GlAfVlJZP6X4qTF2mcRKYHnBKOr5cFmWVdE1HVLZJOc=",
+          "last_login": "2021-07-13T05:09:45.196Z",
+          "is_superuser": true,
+          "username": "yhei",
+          "first_name": "",
+          "last_name": "",
+          "email": "yheihei0126@gmail.com",
+          "is_staff": true,
+          "is_active": true,
+          "date_joined": "2021-07-13T05:09:21.149Z",
+          "groups": [],
+          "user_permissions": []
+      }
+  },
+  {
+      "model": "diary.post",
+      "pk": 1,
+      "fields": {
+          "user": 1,
+          "title": "1つめの日記",
+          "body": "1つめの日記本文",
+          "created_at": "2021-07-13T05:10:40.097Z",
+          "updated_at": "2021-07-22T14:22:57.007Z",
+          "categories": [
+              1
+          ]
+      }
+  },
+  {
+      "model": "diary.post",
+      "pk": 2,
+      "fields": {
+          "user": 1,
+          "title": "2つめの日記",
+          "body": "2つめの日記本文",
+          "created_at": "2021-07-04T05:11:13.196Z",
+          "updated_at": "2021-07-22T13:59:50.294Z",
+          "categories": [
+              2
+          ]
+      }
+  },
+  {
+      "model": "diary.category",
+      "pk": 1,
+      "fields": {
+          "name": "日記",
+          "slug": "diary",
+          "created_at": "2021-07-22T13:59:23.525Z",
+          "updated_at": "2021-07-22T13:59:23.525Z"
+      }
+  },
+  {
+      "model": "diary.category",
+      "pk": 2,
+      "fields": {
+          "name": "雑記",
+          "slug": "general",
+          "created_at": "2021-07-22T13:59:39.153Z",
+          "updated_at": "2021-07-22T13:59:39.153Z"
+      }
+  }
+]
