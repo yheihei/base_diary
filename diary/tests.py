@@ -131,7 +131,7 @@ class TestApiPosts(TestCase):
       response.json()
     )
 
-  def test_5(self):
+  def test_4(self):
     '''投稿日時の降順で取得できるか'''
     token = Token.objects.get(user=User.objects.first())
     client = Client()
@@ -185,7 +185,7 @@ class TestApiPosts(TestCase):
       response.json()
     )
 
-  def test_6(self):
+  def test_5(self):
     '''新規投稿できるか'''
     token = Token.objects.get(user=User.objects.first())
     client = Client()
@@ -203,7 +203,7 @@ class TestApiPosts(TestCase):
     self.assertEqual('body for test_6', post.body)
     self.assertEqual(User.objects.first(), post.user)
 
-  def test_7(self):
+  def test_6(self):
     '''PUTでの更新ができるか'''
     token = Token.objects.get(user=User.objects.first())
     client = Client()
@@ -220,3 +220,31 @@ class TestApiPosts(TestCase):
     post = Post.objects.get(id=1)
     self.assertEqual('1つめの日記 modified', post.title)
     self.assertEqual('1つめの日記本文 modified', post.body)
+
+  def test_7(self):
+    '''PATCHでの部分更新ができるか'''
+    token = Token.objects.get(user=User.objects.first())
+    client = Client()
+    response = client.patch(
+      '/api/posts/1/',
+      {
+        'body': '1つめの日記本文 modified',
+      },
+      content_type='application/json',
+      HTTP_AUTHORIZATION=f"Token {token.pk}"
+    )
+    self.assertEqual(200, response.status_code)
+    post = Post.objects.get(id=1)
+    self.assertEqual('1つめの日記', post.title)
+    self.assertEqual('1つめの日記本文 modified', post.body)
+
+  def test_8(self):
+    '''DELETEでの削除ができるか'''
+    token = Token.objects.get(user=User.objects.first())
+    client = Client()
+    response = client.delete(
+      '/api/posts/1/',
+      HTTP_AUTHORIZATION=f"Token {token.pk}"
+    )
+    self.assertEqual(204, response.status_code)
+    self.assertEqual(False, Post.objects.filter(id=1).exists())
