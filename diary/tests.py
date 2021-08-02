@@ -1,6 +1,5 @@
 from django.test import TestCase, Client
 from diary.models import User, Post
-from rest_framework.authtoken.models import Token
 from django.urls import reverse
 
 # Create your tests here.
@@ -10,11 +9,10 @@ class TestApiPosts(TestCase):
 
   def test_1(self):
     '''投稿一覧が取得できるか'''
-    token = Token.objects.get(user=User.objects.first())
     client = Client()
     response = client.get(
       '/api/posts/',
-      HTTP_AUTHORIZATION=f"Token {token.pk}"
+      HTTP_AUTHORIZATION=f"Token 7e033a902ac180e0231fced74ba58fcd658c7bbf"
     )
     self.assertEqual(200, response.status_code)
     self.assertEqual(
@@ -61,14 +59,13 @@ class TestApiPosts(TestCase):
 
   def test_2(self):
     '''カテゴリで検索できるか'''
-    token = Token.objects.get(user=User.objects.first())
     client = Client()
     response = client.get(
       '/api/posts/',
       {
         'category': 'diary',
       },
-      HTTP_AUTHORIZATION=f"Token {token.pk}"
+      HTTP_AUTHORIZATION=f"Token 7e033a902ac180e0231fced74ba58fcd658c7bbf"
     )
     self.assertEqual(200, response.status_code)
     self.assertEqual(
@@ -97,14 +94,13 @@ class TestApiPosts(TestCase):
 
   def test_3(self):
     '''キーワード検索できるか'''
-    token = Token.objects.get(user=User.objects.first())
     client = Client()
     response = client.get(
       '/api/posts/',
       {
         'search': '2つめ',
       },
-      HTTP_AUTHORIZATION=f"Token {token.pk}"
+      HTTP_AUTHORIZATION=f"Token 7e033a902ac180e0231fced74ba58fcd658c7bbf"
     )
     self.assertEqual(200, response.status_code)
     self.assertEqual(
@@ -133,14 +129,13 @@ class TestApiPosts(TestCase):
 
   def test_4(self):
     '''投稿日時の降順で取得できるか'''
-    token = Token.objects.get(user=User.objects.first())
     client = Client()
     response = client.get(
       '/api/posts/',
       {
         'ordering': '-created_at',
       },
-      HTTP_AUTHORIZATION=f"Token {token.pk}"
+      HTTP_AUTHORIZATION=f"Token 7e033a902ac180e0231fced74ba58fcd658c7bbf"
     )
     self.assertEqual(200, response.status_code)
     self.assertEqual(
@@ -187,7 +182,6 @@ class TestApiPosts(TestCase):
 
   def test_5(self):
     '''新規投稿できるか'''
-    token = Token.objects.get(user=User.objects.first())
     client = Client()
     response = client.post(
       '/api/posts/',
@@ -196,7 +190,7 @@ class TestApiPosts(TestCase):
         'body': 'body for test_6',
       },
       content_type='application/json',
-      HTTP_AUTHORIZATION=f"Token {token.pk}"
+      HTTP_AUTHORIZATION=f"Token 7e033a902ac180e0231fced74ba58fcd658c7bbf"
     )
     self.assertEqual(201, response.status_code)
     post = Post.objects.get(title='title for test_6')
@@ -205,7 +199,6 @@ class TestApiPosts(TestCase):
 
   def test_6(self):
     '''PUTでの更新ができるか'''
-    token = Token.objects.get(user=User.objects.first())
     client = Client()
     response = client.put(
       '/api/posts/1/',
@@ -214,7 +207,7 @@ class TestApiPosts(TestCase):
         'body': '1つめの日記本文 modified',
       },
       content_type='application/json',
-      HTTP_AUTHORIZATION=f"Token {token.pk}"
+      HTTP_AUTHORIZATION=f"Token 7e033a902ac180e0231fced74ba58fcd658c7bbf"
     )
     self.assertEqual(200, response.status_code)
     post = Post.objects.get(id=1)
@@ -223,7 +216,6 @@ class TestApiPosts(TestCase):
 
   def test_7(self):
     '''PATCHでの部分更新ができるか'''
-    token = Token.objects.get(user=User.objects.first())
     client = Client()
     response = client.patch(
       '/api/posts/1/',
@@ -231,7 +223,7 @@ class TestApiPosts(TestCase):
         'body': '1つめの日記本文 modified',
       },
       content_type='application/json',
-      HTTP_AUTHORIZATION=f"Token {token.pk}"
+      HTTP_AUTHORIZATION=f"Token 7e033a902ac180e0231fced74ba58fcd658c7bbf"
     )
     self.assertEqual(200, response.status_code)
     post = Post.objects.get(id=1)
@@ -240,11 +232,10 @@ class TestApiPosts(TestCase):
 
   def test_8(self):
     '''DELETEでの削除ができるか'''
-    token = Token.objects.get(user=User.objects.first())
     client = Client()
     response = client.delete(
       '/api/posts/1/',
-      HTTP_AUTHORIZATION=f"Token {token.pk}"
+      HTTP_AUTHORIZATION=f"Token 7e033a902ac180e0231fced74ba58fcd658c7bbf"
     )
     self.assertEqual(204, response.status_code)
     self.assertEqual(False, Post.objects.filter(id=1).exists())
