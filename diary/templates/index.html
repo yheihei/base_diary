@@ -30,10 +30,11 @@
           </a>
           <script>
             document.addEventListener('DOMContentLoaded', function() {
+              const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
               {% if starred_post_ids|lookup:post.id %}
-              starButton({{ post.id }}, {{ user.id }}, {{ starred_post_ids|lookup:post.id }});
+              new starButton(csrftoken, {{ post.id }}, {{ user.id }}, {{ starred_post_ids|lookup:post.id }}).init();
               {% else %}
-              starButton({{ post.id }}, {{ user.id }});
+              new starButton(csrftoken, {{ post.id }}, {{ user.id }}).init();
               {% endif %}
             });
           </script>
