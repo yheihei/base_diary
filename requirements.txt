@@ -1,0 +1,4 @@
+selenium
+chromedriver-binary
+chromedriver-binary-auto
+djangorestframework

@@ -29,3 +29,17 @@ class Category(models.Model):
 
   def __str__(self) -> str:
     return f'{self.name}'
+
+
+class Star(models.Model):
+  class Meta:
+    constraints = [
+      models.UniqueConstraint(
+        fields=["post", "user"],
+        name="post_user_unique",
+      ),
+    ]
+  post = models.ForeignKey(Post, on_delete=CASCADE)
+  user = models.ForeignKey(User, on_delete=CASCADE)
+  created_at = models.DateTimeField(auto_now_add=True)
+  updated_at = models.DateTimeField(auto_now=True)

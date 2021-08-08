@@ -5,6 +5,8 @@
   <body>
     {% load static %}
     <h1>とあるエンジニアの日記帳</h1>
+    {% csrf_token %}
+    {% load lookup %}
     {% for post in posts %}
       <div>
         <h2>{{ post.title }}</h2>
@@ -16,6 +18,82 @@
           <span>{{ category }},</span>
         {% endfor %}
         </div>
+        {% if user.is_authenticated %}
+          <a href="#" class="star star--post-id-{{ post.id }}">
+            {% if post.id in starred_post_ids.keys %}
+              いいね済
+            {% else %}
+              いいねする
+            {% endif %}
+          </a>
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+              const post_id = {{ post.id }};
+              const user_id = {{ user.id }};
+              {% if post.id in starred_post_ids.keys %}
+                let star_id = {{ starred_post_ids|lookup:post.id }};
+              {% else %}
+                let star_id = 0;
+              {% endif %}
+              let isStared = star_id === 0 ? false : true;
+              const starButton = document.querySelector(`.star.star--post-id-${post_id}`);
+              if (isStared) {
+                starButton.addEventListener('click', removeStar)
+              } else {
+                starButton.addEventListener('click', addStar)
+              }
+
+              function addStar() {
+                fetch("/api/stars/",{
+                  method: "POST",
+                  headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json'
+                  },
+                  body:JSON.stringify({
+                      post: post_id,
+                      user: user_id
+                  })
+                })
+                .then(function(response) { //成功時に実行される
+                  console.log("status=" + response.status); //status=200
+                  starButton.textContent = 'いいね済';
+                  return response.json();
+                })
+                .then(function(data) { //成功時に実行される
+                  console.log(JSON.stringify(data)); //JSONを出力
+                  starButton.addEventListener('click', removeStar)
+                  starButton.removeEventListener('click', addStar)
+                  star_id = data['id']
+                })
+                .catch(function(err) { //失敗時に実行される
+                  console.log(err);
+                });
+              }
+
+              function removeStar() {
+                fetch(`/api/stars/${star_id}`, {
+                  method: "DELETE",
+                  headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json'
+                  }
+                })
+                .then(function(response) { //成功時に実行される
+                  console.log("status=" + response.status); //status=200
+                  isStared = false;
+                  starButton.textContent = 'いいねする';
+                  starButton.addEventListener('click', addStar)
+                  starButton.removeEventListener('click', removeStar)
+                })
+                .catch(function(err) { //失敗時に実行される
+                  console.log(err);
+                });
+              }
+            });
+          </script>
+        {% endif %}
       </div>
     {% empty %}
       <p>No Diaries.</p>
