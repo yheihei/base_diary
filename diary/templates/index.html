@@ -1,6 +1,8 @@
 <html>
   <head>
     <title>とあるエンジニアの日記帳</title>
+    {% load static %}
+    <script src="{% static 'js/app.js' %}"></script>
   </head>
   <body>
     {% load static %}
@@ -28,69 +30,11 @@
           </a>
           <script>
             document.addEventListener('DOMContentLoaded', function() {
-              const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-              const post_id = {{ post.id }};
-              const user_id = {{ user.id }};
-              {% if post.id in starred_post_ids.keys %}
-                let star_id = {{ starred_post_ids|lookup:post.id }};
+              {% if starred_post_ids|lookup:post.id %}
+              starButton({{ post.id }}, {{ user.id }}, {{ starred_post_ids|lookup:post.id }});
               {% else %}
-                let star_id = 0;
+              starButton({{ post.id }}, {{ user.id }});
               {% endif %}
-              let isStared = star_id === 0 ? false : true;
-              const starButton = document.querySelector(`.star.star--post-id-${post_id}`);
-              if (isStared) {
-                starButton.addEventListener('click', removeStar)
-              } else {
-                starButton.addEventListener('click', addStar)
-              }
-
-              function addStar() {
-                fetch("/api/stars/",{
-                  method: "POST",
-                  headers: {
-                    'X-CSRFToken': csrftoken,
-                    'Content-Type': 'application/json'
-                  },
-                  body:JSON.stringify({
-                      post: post_id,
-                      user: user_id
-                  })
-                })
-                .then(function(response) { //成功時に実行される
-                  console.log("status=" + response.status); //status=200
-                  starButton.textContent = 'いいね済';
-                  return response.json();
-                })
-                .then(function(data) { //成功時に実行される
-                  console.log(JSON.stringify(data)); //JSONを出力
-                  starButton.addEventListener('click', removeStar)
-                  starButton.removeEventListener('click', addStar)
-                  star_id = data['id']
-                })
-                .catch(function(err) { //失敗時に実行される
-                  console.log(err);
-                });
-              }
-
-              function removeStar() {
-                fetch(`/api/stars/${star_id}`, {
-                  method: "DELETE",
-                  headers: {
-                    'X-CSRFToken': csrftoken,
-                    'Content-Type': 'application/json'
-                  }
-                })
-                .then(function(response) { //成功時に実行される
-                  console.log("status=" + response.status); //status=200
-                  isStared = false;
-                  starButton.textContent = 'いいねする';
-                  starButton.addEventListener('click', addStar)
-                  starButton.removeEventListener('click', removeStar)
-                })
-                .catch(function(err) { //失敗時に実行される
-                  console.log(err);
-                });
-              }
             });
           </script>
         {% endif %}
