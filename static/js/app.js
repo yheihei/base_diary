@@ -65,6 +65,7 @@ class starButton {
       const data = await response.json();
       this.starId = data['id']
       this.init();
+
       this.enabled();
     }
 
@@ -89,6 +90,7 @@ class starButton {
       }
       this.starId = 0;
       this.init();
+
       this.enabled();
     }
   }
