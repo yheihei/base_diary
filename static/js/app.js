@@ -6,8 +6,6 @@ class starButton {
     this.starId = starId;
     this.element = document.querySelector(`.star.star--post-id-${postId}`);
 
-    this.isFetching = false;
-
     /**
      * 初期化
      */
@@ -31,7 +29,6 @@ class starButton {
     this.disabled = () => {
       this.element.classList.remove('star--enabled');
       this.element.classList.add('star--disabled');
-      this.isFetching = true;
     }
 
     /**
@@ -40,18 +37,12 @@ class starButton {
     this.enabled = () => {
       this.element.classList.remove('star--disabled');
       this.element.classList.add('star--enabled');
-      this.isFetching = false;
     }
 
     /**
      * 非同期通信でいいね!する
      */
     this.addStar = async () => {
-      // 連打対策
-      if (this.isFetching) {
-        console.log('通信中のためskip');
-        return;
-      }
       this.disabled();
 
       let response = await fetch('/api/stars/', {
@@ -81,11 +72,6 @@ class starButton {
      * 非同期通信でいいね!を取り消す
      */
     this.removeStar = async () => {
-      // 連打対策
-      if (this.isFetching) {
-        console.log('通信中のためskip');
-        return;
-      }
       this.disabled();
 
       let response = await fetch(`/api/stars/${this.starId}`, {
