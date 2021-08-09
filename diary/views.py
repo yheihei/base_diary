@@ -19,7 +19,6 @@ def index(request):
     )
     for star in stars:
       starred_post_ids[star.post.id] = star.id
-    print(starred_post_ids)
   return render(request, 'index.html', {
     'posts': posts,
     'starred_post_ids': starred_post_ids,

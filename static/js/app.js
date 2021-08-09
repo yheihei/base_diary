@@ -9,25 +9,9 @@ class starButton {
     this.isFetching = false;
 
     /**
-     * 通信中にいいね!ボタン押下不可にする
-     */
-    this.disabled = () => {
-      this.element.style.pointerEvents = 'none';
-      this.isFetching = true;
-    }
-
-    /**
-     * いいね!ボタン押下可能にする
-     */
-    this.enabled = () => {
-      this.element.style.pointerEvents = '';
-      this.isFetching = false;
-    }
-
-    /**
      * 初期化
      */
-    this.init = () => {
+     this.init = () => {
       if (this.starId) {
         // いいね済の場合
         this.element.textContent = 'いいね済';
@@ -42,6 +26,24 @@ class starButton {
     }
 
     /**
+     * 通信中にいいね!ボタン押下不可にする
+     */
+    this.disabled = () => {
+      this.element.classList.remove('star--enabled');
+      this.element.classList.add('star--disabled');
+      this.isFetching = true;
+    }
+
+    /**
+     * いいね!ボタン押下可能にする
+     */
+    this.enabled = () => {
+      this.element.classList.remove('star--disabled');
+      this.element.classList.add('star--enabled');
+      this.isFetching = false;
+    }
+
+    /**
      * 非同期通信でいいね!する
      */
     this.addStar = async () => {
@@ -52,8 +54,8 @@ class starButton {
       }
       this.disabled();
 
-      let response = await fetch("/api/stars/", {
-        method: "POST",
+      let response = await fetch('/api/stars/', {
+        method: 'POST',
         headers: {
           'X-CSRFToken': this.csrftoken,
           'Content-Type': 'application/json'
@@ -66,13 +68,11 @@ class starButton {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      console.log("status=" + response.status);
       if (response.status !== 201) {
         throw new Error(response.status);
       }
       const data = await response.json();
       this.starId = data['id']
-      console.log(data);
       this.init();
       this.enabled();
     }
@@ -89,7 +89,7 @@ class starButton {
       this.disabled();
 
       let response = await fetch(`/api/stars/${this.starId}`, {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
           'X-CSRFToken': this.csrftoken,
           'Content-Type': 'application/json'
