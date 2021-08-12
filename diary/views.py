@@ -1,6 +1,7 @@
 from django.db import models
 from django.shortcuts import render
 from rest_framework import viewsets, serializers
+from django.db.models import Prefetch
 from rest_framework import mixins
 
 from diary.models import Star
@@ -10,18 +11,17 @@ from .models import Post
 
 # Create your views here.
 def index(request):
-  posts = list(Post.objects.all())
-  starred_post_ids = {}
+  posts = Post.objects.all()
   if request.user.is_authenticated:
-    stars = Star.objects.filter(
-      user=request.user,
-      post__in=[post.id for post in posts]
+    posts = posts.prefetch_related(
+      Prefetch(
+        'star_set',
+        queryset=Star.objects.filter(user=request.user),
+        to_attr='stars'
+      )
     )
-    for star in stars:
-      starred_post_ids[star.post.id] = star.id
   return render(request, 'index.html', {
-    'posts': posts,
-    'starred_post_ids': starred_post_ids,
+    'posts': list(posts),
   })
 
 
