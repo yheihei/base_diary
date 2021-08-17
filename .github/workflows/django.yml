@@ -26,11 +26,12 @@ jobs:
         pip install -r requirements.txt
     - name: Merge Before Tests
       if: github.event.pull_request
+      with:
+        ref: ${{github.event.pull_request.head.ref}}
       run: |
         git config --global user.name ${NAME}
         git config --global user.email ${EMAIL}
-        git fetch
-        git branch
+        git fetch && git merge origin/${{github.base_ref}}
       env:
         NAME: Yohei Kokubo
         EMAIL: yhei.register@gmail.com
