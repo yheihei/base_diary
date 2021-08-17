@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -25,6 +24,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Merge Before Tests
+      if: github.event.pull_request
+      run: |
+        echo ${{ toJson(github) }}
+        echo ${{github.base_ref}}
     - name: Run Tests
       run: |
         python manage.py test
