@@ -30,6 +30,9 @@ jobs:
         git config --global user.name ${NAME}
         git config --global user.email ${EMAIL}
         git fetch && git merge origin/${{github.base_ref}}
+      env:
+        NAME: Yohei Kokubo
+        EMAIL: yhei.register@gmail.com
     - name: Run Tests
       run: |
         python manage.py test
