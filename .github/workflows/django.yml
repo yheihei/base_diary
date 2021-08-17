@@ -3,8 +3,6 @@ name: Django CI
 on:
   push:
     branches: [ feature/** ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:
@@ -26,15 +24,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Merge Before Tests
-      if: github.event.pull_request
-      run: |
-        git config --global user.name ${NAME}
-        git config --global user.email ${EMAIL}
-        git fetch && git merge --allow-unrelated-histories --no-commit --no-ff origin/${{github.base_ref}}
-      env:
-        NAME: Yohei Kokubo
-        EMAIL: yhei.register@gmail.com
     - name: Run Tests
       run: |
         python manage.py test
