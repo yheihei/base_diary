@@ -1,5 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.urls import reverse_lazy
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 import chromedriver_binary  # chromeのドライバーを自動インストール
@@ -15,7 +16,10 @@ class UiTest(StaticLiveServerTestCase):
   @classmethod
   def setUpClass(cls):
     super().setUpClass()
-    cls.selenium = WebDriver()
+    options = Options()
+    options.add_argument('--no-sandbox')
+    options.add_argument('--headless')
+    cls.selenium = WebDriver(options=options)
 
   @classmethod
   def tearDownClass(cls):
