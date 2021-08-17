@@ -1,10 +1,13 @@
 <html>
   <head>
     <title>とあるエンジニアの日記帳</title>
+    {% load static %}
+    <script src="{% static 'js/app.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
   <body>
-    {% load static %}
     <h1>とあるエンジニアの日記帳</h1>
+    {% csrf_token %}
     {% for post in posts %}
       <div>
         <h2>{{ post.title }}</h2>
@@ -16,6 +19,25 @@
           <span>{{ category }},</span>
         {% endfor %}
         </div>
+        {% if user.is_authenticated %}
+          <a href="#" class="star star--post-id-{{ post.id }}">
+            {% if post.stars|length > 0 %}
+              いいね済
+            {% else %}
+              いいねする
+            {% endif %}
+          </a>
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+              {% if post.stars|length > 0 %}
+              new starButton(csrftoken, {{ post.id }}, {{ user.id }}, {{ post.stars.0.id }}).init();
+              {% else %}
+              new starButton(csrftoken, {{ post.id }}, {{ user.id }}).init();
+              {% endif %}
+            });
+          </script>
+        {% endif %}
       </div>
     {% empty %}
       <p>No Diaries.</p>

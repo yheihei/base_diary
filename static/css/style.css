@@ -1,0 +1,6 @@
+.star--disabled {
+  pointer-events: none;
+}
+.star--enabled {
+  pointer-events: initial;
+}
