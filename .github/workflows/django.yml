@@ -31,7 +31,7 @@ jobs:
       run: |
         git config --global user.name ${NAME}
         git config --global user.email ${EMAIL}
-        git fetch && git merge origin/${{github.base_ref}}
+        git fetch && git checkout origin/${{github.base_ref}} && git merge ${{github.head_ref}}
       env:
         NAME: Yohei Kokubo
         EMAIL: yhei.register@gmail.com
