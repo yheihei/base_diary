@@ -1,5 +1,4 @@
 Django==3.2.6
 selenium
-chromedriver-binary==92.0.4515.107.0
-chromedriver-binary-auto
+webdriver-manager
 djangorestframework
