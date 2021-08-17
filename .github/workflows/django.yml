@@ -27,7 +27,7 @@ jobs:
     - name: Merge Before Tests
       if: github.event.pull_request
       run: |
-        git fetch && git merge origin/${{github.base_ref}}
+        git fetch && git merge --allow-unrelated-histories origin/${{github.base_ref}}
     - name: Run Tests
       run: |
         python manage.py test
