@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: ${{github.event.pull_request.head.ref}}
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -26,8 +28,6 @@ jobs:
         pip install -r requirements.txt
     - name: Merge Before Tests
       if: github.event.pull_request
-      with:
-        ref: ${{github.event.pull_request.head.ref}}
       run: |
         git config --global user.name ${NAME}
         git config --global user.email ${EMAIL}
