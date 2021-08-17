@@ -27,8 +27,7 @@ jobs:
     - name: Merge Before Tests
       if: github.event.pull_request
       run: |
-        echo ${{ toJson(github) }}
-        echo ${{github.base_ref}}
+        git fetch && git merge origin/${{github.base_ref}}
     - name: Run Tests
       run: |
         python manage.py test
