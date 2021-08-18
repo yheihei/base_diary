@@ -1,22 +1,26 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.urls import reverse_lazy
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
-import chromedriver_binary  # chromeのドライバーを自動インストール
+from webdriver_manager.chrome import ChromeDriverManager
 from django.urls import reverse_lazy
 from diary.models import Post, Star, User
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-# Create your tests here.
 class UiTest(StaticLiveServerTestCase):
   fixtures = ['diary/fixtures/test/test_index_view.json']
 
   @classmethod
   def setUpClass(cls):
     super().setUpClass()
-    cls.selenium = WebDriver()
+    options = Options()
+    # options.add_argument('--no-sandbox')  # UIのないOSの場合首開けすること
+    # options.add_argument('--headless')    # UIのないOSの場合首開けすること
+    cls.selenium = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
   @classmethod
   def tearDownClass(cls):
