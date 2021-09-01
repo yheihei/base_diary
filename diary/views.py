@@ -43,9 +43,10 @@ class PostListView(ListView):
 
   # 動的なフィルタリング
   # https://docs.djangoproject.com/ja/3.2/topics/class-based-views/generic-display/#dynamic-filtering
-  def get_queryset(self):
+  def get_queryset(self, **kwargs):
+    queryset = super().get_queryset(**kwargs)
     if self.request.GET.get('category'):
-      self.queryset = self.queryset.filter(
+      queryset = queryset.filter(
         categories__slug=self.request.GET.get('category')
       )
-    return self.queryset
+    return queryset
