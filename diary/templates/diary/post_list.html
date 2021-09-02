@@ -23,5 +23,27 @@
     {% empty %}
       <p>No Diaries.</p>
     {% endfor %}
+    <nav>
+      <ul>
+        {% comment %} 前へ {% endcomment %}
+        {% if page_obj.has_previous %}
+          <li><a href="{{ pagenate_root_url }}&page={{ page_obj.previous_page_number }}">前へ</a></li>
+        {% endif %}
+
+        {% comment %} 間のページ {% endcomment %}
+        {% for i in page_obj.paginator.page_range %}
+          {% if page_obj.number == i %}
+            <li>{{ i }}</li>
+          {% else %}
+            <li><a href="{{ pagenate_root_url }}&page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% comment %} 次へ {% endcomment %}
+        {% if page_obj.has_next %}
+          <li><a href="{{ pagenate_root_url }}&page={{ page_obj.next_page_number }}">次へ</a></li>
+        {% endif %}
+      </ul>
+    </nav>
   </body>
 </html>
