@@ -5,6 +5,10 @@
   <body>
     {% load static %}
     <h1>とあるエンジニアの日記帳</h1>
+    <form method="GET" class="post-form">{% csrf_token %}
+      {{ search_form.as_p }}
+      <button type="submit" class="save btn btn-default">検索</button>
+    </form>
     {% for post in posts %}
       <div>
         <h2>{{ post.title }}</h2>

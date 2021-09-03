@@ -5,13 +5,41 @@ from django.urls import reverse, reverse_lazy
 from django.db.models import Prefetch
 
 # Create your views here.
-from .models import Post
+from .models import Post, Category
+from django import forms
 
 # Create your views here.
 # def index(request):
 #   return render(request, 'index.html', {
 #     'posts': Post.objects.all(),
 #   })
+
+class PostSearchForm(forms.Form):
+  category = forms.fields.ChoiceField(
+    label='カテゴリー',
+    choices = (),
+    required=False,
+    widget=forms.widgets.Select
+  )
+  per_page = forms.fields.ChoiceField(
+    label='表示件数',
+    choices = (
+      (1, "1"),
+      (10, "10"),
+      (50, "50"),
+      (100, "100"),
+    ),
+    required=False,
+    widget=forms.widgets.Select
+  )
+
+  def __init__(self, *args, **kwargs):
+    super(PostSearchForm, self).__init__(*args, **kwargs)
+    # カテゴリーの選択肢を設定
+    self.fields['category'].choices = Category.objects.all().values_list('slug', 'name')
+    self.fields['category'].choices.insert(0, ('', '未設定'))
+    print(self.fields['category'].choices)
+
 
 class PostListView(ListView):
   model = Post
@@ -32,7 +60,6 @@ class PostListView(ListView):
   # ページネーション
   paginate_by = 2
   page_kwarg = 'page'  # 未指定でも良い。デフォルトは'page'
-
   pagenate_root_url = reverse_lazy('diary:index')
 
   def get_context_data(self, **kwargs):
@@ -54,10 +81,14 @@ class PostListView(ListView):
     # 検索条件やper_pageを含んだページネーション用URL
     self.pagenate_root_url += '?'
     query_dict = self.request.GET.copy()
-    query_dict.pop(self.page_kwarg)  # ページ番号だけは除く
+    if self.page_kwarg in query_dict.keys():
+      query_dict.pop(self.page_kwarg)  # ページ番号だけは除く
     for key, value in query_dict.items():
       self.pagenate_root_url += f'&{key}={value}'
     context['pagenate_root_url'] = self.pagenate_root_url
+
+    # 検索フォーム
+    context['search_form'] = PostSearchForm(self.request.GET)
     return context
 
   def get_queryset(self, **kwargs):
