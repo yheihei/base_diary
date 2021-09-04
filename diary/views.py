@@ -16,7 +16,7 @@ from django import forms
 
 class PostSearchForm(forms.Form):
   category = forms.fields.ChoiceField(
-    label='カテゴリー',
+    label=Category._meta.verbose_name,
     choices = (),
     required=False,
     widget=forms.widgets.Select
@@ -39,6 +39,8 @@ class PostSearchForm(forms.Form):
     self.fields['category'].choices = Category.objects.all().values_list('slug', 'name')
     self.fields['category'].choices.insert(0, ('', '未設定'))
     print(self.fields['category'].choices)
+    for field in self.fields.values():
+      field.widget.attrs["class"] = "form-control"
 
 
 class PostListView(ListView):

@@ -22,6 +22,8 @@ class Post(models.Model):
   )
 
 class Category(models.Model):
+  class Meta:
+    verbose_name = 'カテゴリー'
   name = models.CharField(max_length=1024)
   slug = models.CharField(max_length=1024)
   created_at = models.DateTimeField(auto_now_add=True)
