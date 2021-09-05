@@ -24,7 +24,9 @@ class PostSearchForm(forms.Form):
   per_page = forms.fields.ChoiceField(
     label='表示件数',
     choices = (
+      (None, "-"),
       (1, "1"),
+      (2, "2"),
       (10, "10"),
       (50, "50"),
       (100, "100"),
@@ -38,7 +40,6 @@ class PostSearchForm(forms.Form):
     # カテゴリーの選択肢を設定
     self.fields['category'].choices = Category.objects.all().values_list('slug', 'name')
     self.fields['category'].choices.insert(0, ('', '未設定'))
-    print(self.fields['category'].choices)
     for field in self.fields.values():
       field.widget.attrs["class"] = "form-control"
 
