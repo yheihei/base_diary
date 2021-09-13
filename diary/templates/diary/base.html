@@ -8,10 +8,12 @@
   </head>
   <body>
     {% load static %}
-    <section class="container pt-3 pb-3">
+    <header class="container pt-3">
       <h1>とあるエンジニアの日記帳</h1>
+    </header>
+    <main role="main" class="container pt-3 pb-3">
       {% block content %}
       {% endblock %}
-    </section>
+    </main>
   </body>
 </html>
