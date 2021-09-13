@@ -117,6 +117,7 @@ class PostListView(ListView):
     -----
     https://github.com/django/django/blob/stable/3.2.x/django/views/generic/list.py
     '''
+    paginate_by = super().get_paginate_by(queryset)
     if self.request.GET.get('per_page'):
-      self.paginate_by = int(self.request.GET.get('per_page'))
-    return super().get_paginate_by(queryset)
+      paginate_by = int(self.request.GET.get('per_page'))
+    return paginate_by
