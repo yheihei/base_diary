@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic.detail import DetailView
 
 # Create your views here.
 from .models import Post
@@ -8,3 +9,7 @@ def index(request):
   return render(request, 'index.html', {
     'posts': Post.objects.all(),
   })
+
+
+class PostDetailView(DetailView):
+  model = Post
