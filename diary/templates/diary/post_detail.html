@@ -1,6 +1,16 @@
 {% extends 'diary/base.html' %}
 {% block content %}
-<h2>{{ object.title }}</h1>
-<p>{{ object.body }}</p>
-<p>Reporter: {{ object.user }}</p>
+<article>
+  <h2>{{ object.title }}</h1>
+  <div class="mt-3">{{ object.body |safe }}</div>
+  <div class="mt-3">
+    <div>投稿者 : {{ object.user }}</div>
+    <div>{{ object.updated_at }}</div>
+    <div>カテゴリー : 
+      {% for category in object.categories.all %}
+        <span>{{ category }},</span>
+      {% endfor %}
+    </div>
+  </div>
+</article>
 {% endblock %}
