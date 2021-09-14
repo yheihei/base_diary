@@ -13,3 +13,9 @@ def index(request):
 
 class PostDetailView(DetailView):
   model = Post
+  # 取得するクエリを指定
+  queryset = Post.objects.select_related(
+    'user',  # あらかじめuserテーブルをjoinしておく
+  ).prefetch_related(
+    'categories',  # あらかじめcategoryテーブルをjoinしておく
+  )
