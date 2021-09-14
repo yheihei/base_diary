@@ -25,6 +25,15 @@ class PostDetailView(DetailView):
   # objectの名前を変更する
   context_object_name = 'post'  # 指定しない場合 object という名前でcontextに渡される
 
+  def get_queryset(self):
+    '''
+    querysetの編集
+    '''
+    queryset = super().get_queryset()
+    # 条件によってquerysetを変えたければここに書く
+
+    return queryset
+
   def get_context_data(self, **kwargs):
     '''
     contextを編集する
