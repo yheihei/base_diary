@@ -1,6 +1,6 @@
 # ウサでも分かる中級Django講座
 
-このリポジトリは、[ウサでも分かる中級Django講座](https://django.yhei-web-design.com/)の教材です。
+このリポジトリは、[ウサでも分かる中級Django講座](https://django.yhei-web-design.com/)の教材用の日記アプリです。
 
 下記の講座で使用されています。  
 
