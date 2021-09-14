@@ -11,6 +11,9 @@
         <span>{{ category }},</span>
       {% endfor %}
     </div>
+    {% if post.edit_url %}
+      <a href="{{ post.edit_url }}">編集</a>
+    {% endif %}
   </div>
 </article>
 {% endblock %}
