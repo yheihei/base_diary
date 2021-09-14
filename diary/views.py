@@ -19,3 +19,6 @@ class PostDetailView(DetailView):
   ).prefetch_related(
     'categories',  # あらかじめcategoryテーブルをjoinしておく
   )
+  # objectの名前を変更する
+  context_object_name = 'post'  # 指定しない場合 object という名前でcontextに渡される
+
