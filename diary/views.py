@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django import forms
 
 # Create your views here.
 def index(request):
@@ -14,29 +15,34 @@ def index(request):
   })
 
 
+class PostForm(forms.ModelForm):
+  class Meta:
+    model = Post
+    fields = ['user', 'title', 'body', 'categories']
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    # ユーザー入力をhiddenに
+    self.fields['user'].widget = forms.HiddenInput()
+
+
 class PostCreateView(LoginRequiredMixin, CreateView):
-  login_url = '/admin/login/'
+  '''
+  [x] ユーザーを投稿者として保存できるようにする
+  [x] カテゴリーを選べるようにする
+  [x] 保存が完了したら特定のページに遷移する
+  [ ] 特殊なバリデーションを付与する
+  [ ] フォームにCSSをあてる
+  [ ] エラー時のフォームにCSSをあてる
+  [ ] 成功したら詳細画面に遷移するようにする
+  '''
+  login_url = reverse_lazy('admin:login')
   model = Post
-  fields = ['title', 'body']
-  # 保存したら一覧に遷移するようにする(暫定)
+  # fields = ['user', 'title', 'body', 'categories']
+  form_class = PostForm
+  # 保存したら一覧に遷移するようにする
   success_url = reverse_lazy('diary:index')
 
-  def form_valid(self, form):
-    '''
-    投稿の保存処理
-    '''
-    # ログイン中のユーザーを投稿者として保存する
-    self.object = form.save(commit=False)
-    self.object.user = self.request.user
-    self.object.save()
-    return HttpResponseRedirect(super().get_success_url())
-
-# カテゴリーを選べるようにする
-
-# 特殊なバリデーションを付与する
-
-# フォームにCSSをあてる
-
-# エラー時のフォームにCSSをあてる
-
-# 成功したら詳細画面に遷移するようにする
+  def get_initial(self):
+    # ユーザーの初期値をログインユーザーにする
+    return {'user': self.request.user,}
