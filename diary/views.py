@@ -25,13 +25,22 @@ class PostForm(forms.ModelForm):
     # ユーザー入力をhiddenに
     self.fields['user'].widget = forms.HiddenInput()
 
+  def clean_title(self):
+    '''
+    特殊なバリデーション
+    '''
+    title = self.cleaned_data['title']
+    if 'ばか' in title:
+      raise forms.ValidationError('誹謗中傷ワードはタイトルに設定できません')
+    return title
+
 
 class PostCreateView(LoginRequiredMixin, CreateView):
   '''
   [x] ユーザーを投稿者として保存できるようにする
   [x] カテゴリーを選べるようにする
   [x] 保存が完了したら特定のページに遷移する
-  [ ] 特殊なバリデーションを付与する
+  [x] 特殊なバリデーションを付与する
   [ ] フォームにCSSをあてる
   [ ] エラー時のフォームにCSSをあてる
   [ ] 成功したら詳細画面に遷移するようにする
