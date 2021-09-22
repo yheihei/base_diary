@@ -7,6 +7,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django import forms
+from django.forms.utils import ErrorList
+from django.utils.html import format_html_join
 
 # Create your views here.
 def index(request):
@@ -15,13 +17,30 @@ def index(request):
   })
 
 
+class BootStrapErrorList(ErrorList):
+  '''
+  デフォルトのエラー表示をカスタマイズする
+  '''
+  def as_ul(self):
+    if not self.data:
+        return ''
+    return format_html_join(
+      '\n',
+      '<div class="alert alert-warning mt-2">{}</div>',
+      ((e,) for e in self)
+    )
+
 class PostForm(forms.ModelForm):
   class Meta:
     model = Post
     fields = ['title', 'body', 'categories']
 
   def __init__(self, *args, **kwargs):
+    # デフォルトのエラー表示を変えるカスタムクラスを指定
+    if 'error_class' not in kwargs.keys():
+      kwargs['error_class'] = BootStrapErrorList
     super().__init__(*args, **kwargs)
+    # formにCSSをあてる
     for field in self.fields.values():
       field.widget.attrs['class'] = 'form-control'
 
@@ -31,6 +50,7 @@ class PostForm(forms.ModelForm):
     '''
     title = self.cleaned_data['title']
     if 'ばか' in title:
+      self.fields['title'].widget.attrs['class'] = 'form-control is-invalid'
       raise forms.ValidationError('誹謗中傷ワードはタイトルに設定できません')
     return title
 
@@ -43,7 +63,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
   [x] 保存が完了したら特定のページに遷移する
   [x] 特殊なバリデーションを付与する
   [x] フォームにCSSをあてる
-  [ ] エラー時のフォームにCSSをあてる
+  [x] エラー時のフォームにCSSをあてる
   '''
   login_url = reverse_lazy('admin:login')
   model = Post
