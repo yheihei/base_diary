@@ -18,12 +18,7 @@ def index(request):
 class PostForm(forms.ModelForm):
   class Meta:
     model = Post
-    fields = ['user', 'title', 'body', 'categories']
-
-  def __init__(self, *args, **kwargs):
-    super().__init__(*args, **kwargs)
-    # ユーザー入力をhiddenに
-    self.fields['user'].widget = forms.HiddenInput()
+    fields = ['title', 'body', 'categories']
 
   def clean_title(self):
     '''
@@ -37,13 +32,13 @@ class PostForm(forms.ModelForm):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
   '''
+  [x] ログイン必須にする
   [x] ユーザーを投稿者として保存できるようにする
   [x] カテゴリーを選べるようにする
   [x] 保存が完了したら特定のページに遷移する
   [x] 特殊なバリデーションを付与する
   [ ] フォームにCSSをあてる
   [ ] エラー時のフォームにCSSをあてる
-  [ ] 成功したら詳細画面に遷移するようにする
   '''
   login_url = reverse_lazy('admin:login')
   model = Post
@@ -52,6 +47,12 @@ class PostCreateView(LoginRequiredMixin, CreateView):
   # 保存したら一覧に遷移するようにする
   success_url = reverse_lazy('diary:index')
 
-  def get_initial(self):
-    # ユーザーの初期値をログインユーザーにする
-    return {'user': self.request.user,}
+  def form_valid(self, form):
+    '''
+    save時に特殊な操作をする
+    '''
+    # ユーザーを投稿者として保存できるようにする
+    object = form.save(commit=False)
+    object.user = self.request.user
+    object.save()
+    return super().form_valid(form)
