@@ -4,21 +4,19 @@
   <h2>記事の追加</h2>
   <div class="mt-3">
     <form action="{% url 'diary:post-add' %}" method="POST">
-      <div class="row">
-        {% csrf_token %}
-        {% for field in form.visible_fields %}
-          <div class="form-group col-12">
-            {{ field.errors }}
-            {{ field.label }}
-            {{ field }}
-            {{ field.help_text }}
-          </div>
-        {% endfor %}
-        {% for field in form.hidden_fields %}
+      {% csrf_token %}
+      {% for field in form.visible_fields %}
+        <div class="form-group">
+          <label>{{ field.label }}</label>
           {{ field }}
-        {% endfor %}
-        <input class="btn btn-primary" type="submit" value="投稿" />
-      </div>
+          {{ field.errors }}
+          {{ field.help_text }}
+        </div>
+      {% endfor %}
+      {% for field in form.hidden_fields %}
+        {{ field }}
+      {% endfor %}
+      <input class="btn btn-primary" type="submit" value="投稿" />
     </form>
   </div>
 </article>

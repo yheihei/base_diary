@@ -20,6 +20,11 @@ class PostForm(forms.ModelForm):
     model = Post
     fields = ['title', 'body', 'categories']
 
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    for field in self.fields.values():
+      field.widget.attrs['class'] = 'form-control'
+
   def clean_title(self):
     '''
     特殊なバリデーション
@@ -37,7 +42,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
   [x] カテゴリーを選べるようにする
   [x] 保存が完了したら特定のページに遷移する
   [x] 特殊なバリデーションを付与する
-  [ ] フォームにCSSをあてる
+  [x] フォームにCSSをあてる
   [ ] エラー時のフォームにCSSをあてる
   '''
   login_url = reverse_lazy('admin:login')
