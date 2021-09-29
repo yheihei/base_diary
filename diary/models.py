@@ -20,6 +20,14 @@ class Post(models.Model):
     blank=True,
     related_name="posts",
   )
+  updated_by = models.ForeignKey(
+    User,
+    default=None,
+    on_delete=models.SET_NULL,
+    null=True,
+    blank=True,
+    related_name='updated_by_user'
+  )
 
 class Category(models.Model):
   name = models.CharField(max_length=1024)
