@@ -1,10 +1,5 @@
-<html>
-  <head>
-    <title>とあるエンジニアの日記帳</title>
-  </head>
-  <body>
-    {% load static %}
-    <h1>とあるエンジニアの日記帳</h1>
+{% extends 'diary/base.html' %}
+{% block content %}
     {% for post in posts %}
       <div>
         <h2>{{ post.title }} id:{{ post.pk }}</h2>
@@ -21,5 +16,4 @@
     {% empty %}
       <p>No Diaries.</p>
     {% endfor %}
-  </body>
-</html>
+{% endblock %}

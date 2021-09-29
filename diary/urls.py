@@ -5,4 +5,5 @@ app_name = "diary"
 urlpatterns = [
   path("", views.index, name="index"),
   path('<int:pk>/update/', views.PostUpdateView.as_view(), name='post-update'),
+  path('<int:pk>/', views.PostDetailView.as_view(), name='post-detail'),
 ]

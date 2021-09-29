@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from .models import Post
+from django.urls import reverse
 
 # Create your views here.
 def index(request):
@@ -11,17 +12,62 @@ def index(request):
 
 
 from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+  # ログインURLも指定する
+  login_url = reverse_lazy('admin:login')
   # template_name = 'diary/post_form.html'  # デフォルトはアプリ名/モデル名_form.html
   model = Post
   fields = ['title', 'body', 'categories']
-  success_url = reverse_lazy('diary:index')
+  # success_url = reverse_lazy('diary:index')
 
-  def form_valid(self, form: Post):
+  def form_valid(self, form):
     object: Post = form.save(commit=False)
     object.updated_by = self.request.user
     object.save()
     return super().form_valid(form)
+
+  def get_success_url(self):
+    '''
+    更新完了したらどこに遷移させるか
+    '''
+    return reverse('diary:post-detail', kwargs={'pk': self.object.pk})
+
+
+class PostDetailView(DetailView):
+  model = Post
+  # テンプレートの名前を指定する
+  template_name = 'diary/post_detail.html'  # 未指定の場合 アプリ名/post_detail.html
+  # 取得するクエリを指定
+  queryset = Post.objects.select_related(
+    'user',  # あらかじめuserテーブルをjoinしておく
+  ).prefetch_related(
+    'categories',  # あらかじめcategoryテーブルをjoinしておく
+  )
+  # objectの名前を変更する
+  context_object_name = 'post'  # 指定しない場合 object という名前でcontextに渡される
+
+  def get_queryset(self):
+    '''
+    querysetの編集
+    '''
+    queryset = super().get_queryset()
+    # 条件によってquerysetを変えたければここに書く
+
+    return queryset
+
+  def get_context_data(self, **kwargs):
+    '''
+    contextを編集する
+    '''
+    # contextの取得
+    context = super().get_context_data(**kwargs)
+    # 編集ページのURLを追加
+    if self.request.user.is_authenticated and context[self.context_object_name]:
+      post = context[self.context_object_name]
+      post.edit_url = reverse(f'admin:{post._meta.app_label}_{post._meta.model_name}_change', args=[post.id] )
+    return context
