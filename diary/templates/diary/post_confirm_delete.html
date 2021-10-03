@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <title>とあるエンジニアの日記帳</title>
+  </head>
+  <body>
+    {% load static %}
+    <form method="post">{% csrf_token %}
+      <p>Are you sure you want to delete a below post?</p>
+      <div>
+        <h2>{{ object.title }}</h2>
+        <div>投稿 : {{ object.user }}</div>
+      </div>
+      <input type="submit" value="Confirm">
+    </form>
+  </body?
+</html>
